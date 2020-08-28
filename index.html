@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Acme LookUp</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./css/app.css">
+</head>
+
+<body>
+    <div class="container mt-5" class="bg">
+        <div class="col-md-12 m-auto">
+            <h1 class="text-center">
+                Search the Information You Need...
+            </h1>
+                
+            <form>
+                <div class="form-group">
+                    <input type="text" value="" visible = "False" placeholder="Enter..." name="message" id="user_input" text-align="center" class="form-control">
+                </div>
+            </form>
+                
+            <div>
+                <button type="button" id="submitquery" onclick="showIP();" class="btn btn-primary" class="text-center">Search</button>
+            </div>
+                
+            <p><span id="matchlistcontacts"></span></p>
+            <p><span id="matchlistcalendar"></span></p>
+            <p><span id="matchlistslack" ></span></p>
+            <p><span id="matchlistdropbox"></span></p>
+            <p><span id="matchlisttweet" ></span></p>  
+            <h5 id="empty" class="text-danger"></h5>
+            <h5 id="nostring" class="text-danger"></h5>
+                
+    <script>
+
+    // ********* Contacts HTML *********
+        
+    outputHtmlContacts = finalContactsArray => {
+        if(finalContactsArray.length>0){
+            const html1 = finalContactsArray.map(finalContactsArray => `
+            <h4>Contact Information - </h4>
+                <table>
+                    <tr>
+                        <td>ID: </td>
+                        <td>${finalContactsArray.id}</td>
+                    </tr>
+                    <tr>
+                        <td>Name: </td>
+                        <td>${finalContactsArray.name}</td>
+                    </tr>
+                    <tr>
+                        <td>Company: </td>
+                        <td>${finalContactsArray.company}</td>
+                    </tr>
+                    <tr>
+                        <td>Emails: </td>
+                        <td>${finalContactsArray.emails}</td>
+                    </tr>
+                    <tr>
+                        <td>Phone Number: </td>
+                        <td>${finalContactsArray.phones}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Contact Time: </td>
+                        <td>${finalContactsArray.last_contact}</td>
+                    </tr>
+                </table>
+                <button id="deleteEntry" onclick="deleteEntry();" margin="20px 50px" class="btn btn-danger">Delete this Entry</button>
+            `)
+            .join('');
+            matchListContacts.innerHTML = html1
+            }
+        }
+        
+    // ******** Calendar HTML **********
+
+    outputHtmlCalendar = finalCalendarArray => {
+        if(finalCalendarArray.length>0){
+            const html2 = finalCalendarArray.map(finalCalendarArray => `
+            <h4>Calendar Information - </h4>
+            <div>
+                <table>
+                    <tr>
+                        <td>ID: </td>
+                        <td>${finalCalendarArray.id}</td>
+                    </tr>
+                    <tr>
+                        <td>Title: </td>
+                        <td>${finalCalendarArray.title}</td>
+                    </tr>
+                    <tr>
+                        <td>Invitees: </td>
+                        <td>${finalCalendarArray.invitees}</td>
+                    </tr>
+                </table>
+            </div>
+            <button id="deleteEntry" onclick="deleteEntry();" class="btn btn-danger">Delete this Entry</button>
+        `)
+        .join('');
+        matchListCalendar.innerHTML = html2
+        }
+    }
+
+                //********** Slack HTML ************
+                
+                outputHtmlSlack = finalSlackArray => {
+                    if(finalSlackArray.length>0){
+                    const html3 = finalSlackArray.map(finalSlackArray => `
+                    <h4>Slack Information - </h4>
+                    <table>
+                        <tr>
+                            <td>ID: </td>
+                            <td>${finalSlackArray.id}</td>
+                        </tr>
+                        <tr>
+                            <td>Channel: </td>
+                            <td>${finalSlackArray.channel}</td>
+                        </tr>
+                        <tr>
+                            <td>Author: </td>
+                            <td>${finalSlackArray.author}</td>
+                        </tr>
+                        <tr>
+                            <td>Message: </td>
+                            <td>${finalSlackArray.message}</td>
+                        </tr>
+                        <tr>
+                            <td>TimeStamp: </td>
+                            <td>${finalSlackArray.timestamp}</td>
+                        </tr>
+                    </table>
+                    <button id="deleteEntry" onclick="deleteEntry();" class="btn btn-danger">Delete this Entry</button>
+               `)
+                .join('');
+                matchListSlack.innerHTML = html3
+           }
+        }
+
+            // *********** DropBox HTML ***********
+
+                outputHtmlDropBox = finalDropBoxArray => {
+                    if(finalDropBoxArray.length>0){
+                    const html4 = finalDropBoxArray.map(finalDropBoxArray => `
+                    <h4>DropBox Information -  </h4>
+                    <table>
+                        <tr>
+                            <td>ID: </td>
+                            <td>${finalDropBoxArray.id}</td>
+                        </tr>
+                        <tr>
+                            <td>Path: </td>
+                            <td>${finalDropBoxArray.path}</td>
+                        </tr>
+                        <tr>
+                            <td>Title: </td>
+                            <td>${finalDropBoxArray.title}</td>
+                        </tr>
+                        <tr>
+                            <td>Shared With: </td>
+                            <td>${finalDropBoxArray.shared_with}</td>
+                        </tr>
+                    </table>
+                    <button id="deleteEntry" onclick="deleteEntry();" class="btn btn-danger">Delete this Entry</button>
+                `)
+                .join('');
+                matchListDropBox.innerHTML = html4
+            }
+        }
+
+            // ************ Tweet HTMl *************
+                outputHtmlTweet = finalTweetArray => {
+                    if(finalTweetArray.length>0){
+                    const html5 = finalTweetArray.map(finalTweetArray => `
+                    <h4>Tweets Information -  </h4>
+                    <table>
+                        <tr>
+                            <td>User: </td>
+                            <td>${finalTweetArray.user}</td>
+                        </tr>
+                        <tr>
+                            <td>Message: </td>
+                            <td>${finalTweetArray.message}</td>
+                        </tr>
+                        <tr>
+                            <td>TimeStamp: </td>
+                            <td>${finalTweetArray.timestamp}</td>
+                        </tr>
+                    </table>
+                    <button id="deleteEntry" onclick="deleteEntry();" class="btn btn-danger">Delete this Entry</button>
+                `)
+                .join('');
+                matchListTweet.innerHTML = html5
+            }
+        }
+</script>
+</div>
+<script src='js/main.js'></script>
+</body>
+</html>
